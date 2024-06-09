@@ -1,0 +1,6 @@
+services:
+  zoomsdk: &zoomsdk
+    build: ./
+    platform: linux/amd64
+    volumes:
+     - .:/tmp/meeting-sdk-linux-sample
