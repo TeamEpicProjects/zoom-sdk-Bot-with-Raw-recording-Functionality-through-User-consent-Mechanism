@@ -359,7 +359,7 @@ void Zoom::sendMessage(const std::string& message) {
 void Zoom::checkConsentStatus() {
     while (!recordingStarted) {
         // Simulate API call
-        std::this_thread::sleep_for(std::chrono::seconds(10)); // Adjust interval as needed
+        std::this_thread::sleep_for(std::chrono::seconds(2)); // Adjust interval as needed
         fetchParticipants();
 
         // API call to fetch consent status
@@ -369,7 +369,7 @@ void Zoom::checkConsentStatus() {
             // Perform the HTTP request here and return the response as a string
             // For demonstration purposes, a mock implementation is provided below
             // Replace this with your actual HTTP request code
-            std::string dummyApiResponse = "{\"consenting_users\": [\"user1\", \"user2\"]}";
+            std::string dummyApiResponse = "{\"consenting_users\": [\"IdentifAI KYE\", \"Harshit Soni\"]}";
             return dummyApiResponse;
         });
 
@@ -417,12 +417,24 @@ void Zoom::sendConsentReminder() {
     sendMessage(reminder);
 }
 
+// New function implementation
+void Zoom::startRecordingIfAllConsented() {
+    bool allConsented = std::all_of(consentStatus.begin(), consentStatus.end(),
+                                     [](const auto& entry) { return entry.second; });
+
+    if (allConsented) {
+        Log::info("All participants have consented. Starting recording...");
+        startRawRecording();
+    } else {
+        Log::info("Not all participants have consented yet. Waiting...");
+    }
+}
 
 
 // Start checking for consent
 void Zoom::startConsentCheck() {
     std::thread([this]() {
-        std::this_thread::sleep_for(std::chrono::minutes(2));
+        std::this_thread::sleep_for(std::chrono::seconds(30));
         if (!recordingStarted) {
             sendConsentReminder();
         }

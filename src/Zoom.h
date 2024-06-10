@@ -62,7 +62,7 @@ class Zoom : public Singleton<Zoom> {
     SDKError createServices();
     void generateJWT(const string& key, const string& secret);
     SDKError sendConsentRequest(IMeetingChatController* chatCtrl);
-    SDKError startRecordingIfAllConsented();
+    void startRecordingIfAllConsented();
     void checkConsentStatus();
 
     function<void()> onAuth = [&]() {

@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.20.2)
 project(meeting_sdk_linux_sample VERSION 1.0.1)
 
-
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_COMPILER /usr/bin/g++)
 
@@ -16,11 +15,13 @@ find_package(CLI11 REQUIRED)
 find_path(JWT_CPP_INCLUDE_DIRS "jwt-cpp/base.h")
 
 find_package(PkgConfig REQUIRED)
-find_package(jsoncpp REQUIRED)
 pkg_check_modules(deps REQUIRED IMPORTED_TARGET glib-2.0)
 
+# Find jsoncpp library
+find_package(jsoncpp REQUIRED)
+
 include_directories(${ZOOM_SDK}/h)
-include_directories(${JSONCPP_INCLUDE_DIRS})
+include_directories(${JSONCPP_INCLUDE_DIRS}) # Include jsoncpp headers
 link_directories(${ZOOM_SDK} ${ZOOM_SDK})
 link_directories(${ZOOM_SDK} ${ZOOM_SDK}/qt_libs/**)
 
@@ -46,11 +47,5 @@ add_executable(zoomsdk src/main.cpp
 )
 
 target_include_directories(zoomsdk PRIVATE ${JWT_CPP_INCLUDE_DIRS})
-target_link_libraries(zoomsdk PRIVATE meetingsdk ada::ada CLI11::CLI11 PkgConfig::deps)
-target_link_libraries(zoomsdk ${JSONCPP_LIBRARIES})
-
-
-
-
-
-
+target_link_libraries(zoomsdk PRIVATE meetingsdk ada::ada CLI11::CLI11 PkgConfig::deps jsoncpp_lib)
+# target_link_libraries(zoomsdk PRIVATE ${JSONCPP_LIBRARIES}) # Link jsoncpp library

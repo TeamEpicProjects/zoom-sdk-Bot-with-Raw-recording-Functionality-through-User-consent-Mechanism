@@ -30,10 +30,11 @@ RUN apt-get update  \
     pkgconf \
     tar \
     unzip \
-    zip
+    zip \
+    libjsoncpp-dev
 
 # Install ALSA
-RUN apt-get install -y libasound2 libasound2-plugins alsa alsa-utils alsa-oss libjsoncpp-dev
+RUN apt-get install -y libasound2 libasound2-plugins alsa alsa-utils alsa-oss 
 
 # Install Pulseaudio
 RUN apt-get install -y  pulseaudio pulseaudio-utils
@@ -56,5 +57,6 @@ FROM deps AS build
 
 WORKDIR $cwd
 ENTRYPOINT ["/tini", "--", "./bin/entry.sh"]
+# ENTRYPOINT [ "sh" ]
 
 
